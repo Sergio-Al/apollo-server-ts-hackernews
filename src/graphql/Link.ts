@@ -1,5 +1,4 @@
-import { arg, extendType, idArg, nonNull, objectType, stringArg } from "nexus";
-import { NexusGenObjects } from "../../nexus-typegen";
+import { extendType, idArg, nonNull, objectType, stringArg } from "nexus";
 
 export const Link = objectType({
   name: "Link",
@@ -10,27 +9,13 @@ export const Link = objectType({
   },
 });
 
-// dummy data
-let links: NexusGenObjects["Link"][] = [
-  {
-    id: 1,
-    url: "www.google.com",
-    description: "main page of google",
-  },
-  {
-    id: 2,
-    url: "graphql.org",
-    description: "GraphQL official website",
-  },
-];
-
 export const LinkQuery = extendType({
   type: "Query",
   definition(t) {
     t.nonNull.list.nonNull.field("feed", {
       type: "Link",
       resolve(parent, args, context, info) {
-        return links;
+        return context.prisma.link.findMany();
       },
     });
     t.field("link", {
@@ -39,7 +24,11 @@ export const LinkQuery = extendType({
         id: nonNull(idArg()),
       },
       resolve(parent, args, context) {
-        return links.filter((link) => link.id.toString() === args.id)[0];
+        return context.prisma.link.findUnique({
+          where: {
+            id: Number(args.id),
+          },
+        });
       },
     });
   },
@@ -56,16 +45,11 @@ export const LinkMutation = extendType({
       },
 
       resolve(parent, args, context) {
-        const { description, url } = args;
+        const newLink = context.prisma.link.create({
+          data: { ...args },
+        });
 
-        let idCount = links.length + 1;
-        const link = {
-          id: idCount,
-          description,
-          url,
-        };
-        links.push(link);
-        return link;
+        return newLink;
       },
     });
     t.nonNull.field("updateLink", {
@@ -76,19 +60,23 @@ export const LinkMutation = extendType({
         description: stringArg(),
       },
       resolve(parent, args, context) {
-        const { id, url, description } = args;
+        const updatedLink = {
+          id: Number(args.id),
+          url: args.url,
+          description: args.description,
+        };
 
-        links = links.map((link) =>
-          link.id.toString() === id
-            ? {
-                id: Number(id),
-                description: description || link.description,
-                url: url || link.url,
-              }
-            : link
-        );
+        const newLink = context.prisma.link.update({
+          where: {
+            id: Number(args.id),
+          },
+          // we do not always need to update all fields 
+          // if a field is null; Prisma will not update it.
+          // @ts-ignore
+          data: { ...updatedLink },
+        });
 
-        return links.filter((link) => link.id.toString() === id)[0];
+        return newLink;
       },
     });
     t.nonNull.field("deleteLink", {
@@ -97,11 +85,11 @@ export const LinkMutation = extendType({
         id: nonNull(idArg()),
       },
       resolve(parent, args, context) {
-        const removedLink = links.filter(
-          (link) => link.id.toString() === args.id
-        )[0];
-
-        links = links.filter((link) => link.id.toString() !== args.id);
+        const removedLink = context.prisma.link.delete({
+          where: {
+            id: Number(args.id),
+          },
+        });
 
         return removedLink;
       },
