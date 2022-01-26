@@ -2,3 +2,6 @@ node_modules/
 
 #files
 .env
+
+#misc
+.DS_Store

@@ -22,3 +22,10 @@ run the project
 ```
 npm run dev
 ```
+
+Now if you open http://localhost:3000 (with internet connection) you should enter to the Apllo studio GraphQL playground
+
+![apollo-image](/assets/info/apollo-playground.png)
+
+> Remember to run `npm run generate` if you change you schema,
+> Don't touch generated files
