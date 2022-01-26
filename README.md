@@ -18,11 +18,15 @@ generate your files (if you don't have) `schema.graphql` and `nexus-typegen.ts`
 ```
 npm run generate
 ```
+Generate our prisma migration database files
+```
+npx prisma generate
+```
 run the project
 ```
 npm run dev
 ```
-
+ ---
 Now if you open http://localhost:3000 (with internet connection) you should enter to the Apllo studio GraphQL playground
 
 ![apollo-image](/assets/info/apollo-playground.png)
