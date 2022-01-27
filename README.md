@@ -26,6 +26,11 @@ run the project
 ```
 npm run dev
 ```
+Optional: you can explore your database data with Prisma Studio
+this will open a new tab in your browser
+```
+npx prisma studio
+```
  ---
 Now if you open http://localhost:3000 (with internet connection) you should enter to the Apllo studio GraphQL playground
 
