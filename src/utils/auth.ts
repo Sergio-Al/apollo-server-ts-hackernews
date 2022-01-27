@@ -4,6 +4,8 @@ export interface AuthTokenPayload {
   userId: number;
 }
 
+export const expiresInValue: string = "2 h"; // format by ms, visit https://github.com/vercel/ms for more info
+
 export function decodeAuthHeader(authHeader: String): AuthTokenPayload {
   const token = authHeader.replace("Bearer ", "");
 

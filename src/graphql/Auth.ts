@@ -1,6 +1,7 @@
 import { objectType, extendType, nonNull, stringArg } from "nexus";
 import * as bcrypt from "bcryptjs";
 import * as jwt from "jsonwebtoken";
+import { expiresInValue } from "../utils/auth";
 
 export const AuthPayload = objectType({
   name: "AuthPayload",
@@ -28,8 +29,11 @@ export const AuthMutation = extendType({
         const user = await context.prisma.user.create({
           data: { email, name, password },
         });
-        const secret = process.env.APP_SECRET!;
-        const token = jwt.sign({ userId: user.id }, secret);
+
+        // creates a new token
+        const token = jwt.sign({ userId: user.id }, context.secret, {
+          expiresIn: expiresInValue,
+        });
 
         return {
           token,
@@ -57,8 +61,10 @@ export const AuthMutation = extendType({
           throw new Error("Invalid password");
         }
 
-        const secret = process.env.APP_SECRET!;
-        const token = jwt.sign({ userId: user.id }, secret);
+        // creates a new token
+        const token = jwt.sign({ userId: user.id }, context.secret, {
+          expiresIn: expiresInValue,
+        });
 
         return { token, user };
       },

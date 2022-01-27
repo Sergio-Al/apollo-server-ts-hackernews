@@ -84,6 +84,11 @@ export const LinkMutation = extendType({
           url: args.url,
           description: args.description,
         };
+        const { userId } = context;
+
+        if (!userId) {
+          throw new Error("Cannot post without logging in.");
+        }
 
         const newLink = context.prisma.link.update({
           where: {
@@ -104,6 +109,12 @@ export const LinkMutation = extendType({
         id: nonNull(idArg()),
       },
       resolve(parent, args, context) {
+        const { userId } = context;
+
+        if (!userId) {
+          throw new Error("Cannot post without logging in.");
+        }
+
         const removedLink = context.prisma.link.delete({
           where: {
             id: Number(args.id),
