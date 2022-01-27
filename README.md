@@ -8,17 +8,20 @@ This is app is based is using the following tools
 - graphql
 - nexus: is a library to create type-safe GraphQL schemas with a code first approach.
 
+## Add a env file
+create an `.env` file and add your values, `.env.example` is the template, add these values to your real `.env` file with your values.
+
 ## Run the project
 
 install dependencies
 ```
 npm install
 ```
-generate your files (if you don't have) `schema.graphql` and `nexus-typegen.ts`
+generate your files (if you don't have `schema.graphql` and `nexus-typegen.ts`)
 ```
 npm run generate
 ```
-Generate our prisma migration database files
+Generate our prisma migration database files, run this command if you modify the schema too
 ```
 npx prisma generate
 ```
