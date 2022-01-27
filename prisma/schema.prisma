@@ -15,4 +15,14 @@ model Link {
   createdAt   DateTime @default(now()) // by default DateTime follows standard ISO 8601-format string (eg: 2022-01-26T10:31:34.798Z)
   description String
   url         String
+  postedBy    User?    @relation(fields: [postedById], references: [id])
+  postedById  Int?
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  name     String
+  email    String @unique
+  password String
+  link     Link[]
 }

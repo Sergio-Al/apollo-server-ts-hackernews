@@ -3,6 +3,7 @@ node_modules/
 #prisma files migrations folder and sqlite database file
 prisma/migrations/
 prisma/dev.db
+prisma/dev.db-journal
 
 #files
 .env
