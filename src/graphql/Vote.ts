@@ -1,6 +1,6 @@
 import { objectType, extendType, nonNull, intArg } from "nexus";
 import { User } from "@prisma/client";
-import { AuthenticationError } from "apollo-server";
+import { AuthenticationError } from "apollo-server-express";
 
 export const Vote = objectType({
   name: "Vote",

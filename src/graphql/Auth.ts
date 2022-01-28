@@ -2,7 +2,7 @@ import { objectType, extendType, nonNull, stringArg } from "nexus";
 import * as bcrypt from "bcryptjs";
 import * as jwt from "jsonwebtoken";
 import { expiresInValue } from "../utils/auth";
-import { AuthenticationError } from "apollo-server";
+import { AuthenticationError } from "apollo-server-express";
 
 export const AuthPayload = objectType({
   name: "AuthPayload",
