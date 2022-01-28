@@ -6,12 +6,21 @@ export const Link = objectType({
     t.nonNull.int("id");
     t.nonNull.string("description");
     t.nonNull.string("url");
+    t.nonNull.dateTime("createdAt");
     t.field("postedBy", {
       type: "User",
       resolve(parent, args, context) {
         return context.prisma.link
           .findUnique({ where: { id: parent.id } })
           .postedBy();
+      },
+    });
+    t.nonNull.list.nonNull.field("voters", {
+      type: "User",
+      resolve(parent, args, context) {
+        return context.prisma.link
+          .findUnique({ where: { id: parent.id } })
+          .voters();
       },
     });
   },
@@ -64,7 +73,17 @@ export const LinkMutation = extendType({
           data: {
             description,
             url,
-            postedBy: { connect: { id: userId } },
+            postedBy: {
+              /*
+                Remember! A nested 'connect' query connects a record 
+                to an existing related record by specifying an ID or
+                unique identifier.
+                more info: https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#connect 
+             */
+              connect: {
+                id: userId,
+              },
+            },
           },
         });
 

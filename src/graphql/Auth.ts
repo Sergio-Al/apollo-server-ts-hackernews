@@ -2,6 +2,7 @@ import { objectType, extendType, nonNull, stringArg } from "nexus";
 import * as bcrypt from "bcryptjs";
 import * as jwt from "jsonwebtoken";
 import { expiresInValue } from "../utils/auth";
+import { AuthenticationError } from "apollo-server";
 
 export const AuthPayload = objectType({
   name: "AuthPayload",
@@ -58,7 +59,7 @@ export const AuthMutation = extendType({
 
         const valid = await bcrypt.compare(args.password, user.password);
         if (!valid) {
-          throw new Error("Invalid password");
+          throw new AuthenticationError("Invalid password");
         }
 
         // creates a new token
