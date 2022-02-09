@@ -1,4 +1,4 @@
-# Apollo-Server Node Typescript Project Hackernews
+# Typescript GraphQL Hackernews Backend
 
 This is app is based is using the following tools
 
